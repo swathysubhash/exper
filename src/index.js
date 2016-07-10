@@ -180,16 +180,20 @@ extend(E.prototype, {
 	**/
 	objectify (a, b, o) {
 		if (o === 'in') b = b.split(',')
+		let typea = type(a),
+			typeb = type(b)
 		return {
 			left: {
 				value: format(a),
-				type: type(a),
+				_value: typea !== 'object' ? format(a) : '',
+				type: typea,
 				variable: true
 			},
 			operator: o,
 			right: {
 				value: format(b),
-				type: type(b),
+				_value: typeb !== 'object' ? format(b) : '',
+				type: typeb,
 				variable: false
 			}
 		}
@@ -225,11 +229,4 @@ extend(E.prototype, {
 
 })
 
-export default E
-
-console.log(E('(id = "123323" and price> 1299) or (skuid = 31231 and article in ( shoes, caps))').evaluate({
-	id: '123323',
-	price: 2000,
-	skuid: 31231,
-	article: 'shoes'
-}))
+module.exports = E

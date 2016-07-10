@@ -7,18 +7,18 @@
 **/
 function evaluate (exp, data) {
 	if (exp.left.type === 'object') {
-		exp.left.value = evaluate(exp.left.value, data)
+		exp.left._value = evaluate(exp.left.value, data)
 	}
 
 	if (exp.right.type === 'object') {
-		exp.right.value = evaluate(exp.right.value, data)
+		exp.right._value = evaluate(exp.right.value, data)
 	}
 
 	if (exp.left.variable && typeof data[exp.left.value] !== 'undefined') {
-		exp.left.value = data[exp.left.value]
+		exp.left._value = data[exp.left.value]
 	}
 
-	return operation(exp.left.value, exp.right.value, exp.operator)
+	return operation(exp.left._value, exp.right._value, exp.operator)
 }
 
 /**
@@ -42,7 +42,7 @@ function operation (left, right, operator) {
 		case 'or':
 		case '||':
 		case '|':
-			return left && right
+			return left || right
 		case '>':
 			return left > right
 		case '<':

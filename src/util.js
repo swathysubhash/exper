@@ -16,6 +16,7 @@ const util = {
 				if (str.indexOf('\'') !== -1) str = str.replace(/\'/g, '')
 			}
 		}
+		if (str instanceof Array) str = str.map(util.format)
 
 		return str
 	},
