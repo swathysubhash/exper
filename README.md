@@ -1,4 +1,4 @@
-# EXPER
+# Exper
 
 [![Build Status](https://travis-ci.org/swathysubhash/exper.svg?branch=master)](https://travis-ci.org/swathysubhash/exper)
 
