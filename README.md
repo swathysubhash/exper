@@ -1,5 +1,7 @@
 # EXPER
 
+[![Build Status](https://travis-ci.org/swathysubhash/exper.svg?branch=master)](https://travis-ci.org/swathysubhash/exper)
+
 Simple logical Expression Evaluator
 
 
