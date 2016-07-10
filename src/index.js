@@ -21,14 +21,14 @@ const operators = [ '=', '>', '<', '&&', '||', 'and', 'or', 'in' ],
 		Creates json object and stores in this.processed
 	@param {String} Expression string
 **/
-function E (exp) {
-	if (!(this instanceof E)) return new E(exp)
+function Exper (exp) {
+	if (!(this instanceof Exper)) return new Exper(exp)
 	this.exp = exp
 	this.processed = []
 	this.parse()
 }
 
-extend(E.prototype, {
+extend(Exper.prototype, {
 	/**
 	  parse()
 	  	Initialize function to create
@@ -229,4 +229,4 @@ extend(E.prototype, {
 
 })
 
-module.exports = E
+module.exports = Exper
