@@ -136,7 +136,7 @@ rules:
     no-trailing-spaces:
         - 1
     sort-imports:
-        - 1
+        - 0
     curly:
         - 0
         - multi-or-nest
