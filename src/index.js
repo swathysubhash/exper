@@ -1,6 +1,10 @@
+import { checkBraces, format, type } from './util'
 import { extend } from 'underscore'
+import evaluate from './evaluate'
 
 
+
+// Operators allowed
 const operators = [ '=', '>', '<', '&&', '||', 'and', 'or', 'in' ],
 	braces = [ '(', ')' ],
 	prec = {
@@ -12,6 +16,11 @@ const operators = [ '=', '>', '<', '&&', '||', 'and', 'or', 'in' ],
 		in: 1
 	}
 
+/**
+	E(exp)
+		Creates json object and stores in this.processed
+	@param {String} Expression string
+**/
 function E (exp) {
 	if (!(this instanceof E)) return new E(exp)
 	this.exp = exp
@@ -20,12 +29,23 @@ function E (exp) {
 }
 
 extend(E.prototype, {
+	/**
+	  parse()
+	  	Initialize function to create
+	  	json object of given expression
+	**/
 	parse () {
 		let tokens = this.tokenize(this.exp)
 		tokens = this.postfix(tokens)
 		this.processed = this.process(tokens)
 	},
 
+	/**
+	  tokenize( str )
+	  	Tokenize given string to to an array of tokens
+	  @param {String} Expression string
+	  @return {Array} Array of tokens
+	**/
 	tokenize (str) {
 		let curr = '',
 			tokens = []
@@ -49,9 +69,23 @@ extend(E.prototype, {
 		if (curr) tokens.push(curr)
 
 		tokens = this.inOperator(tokens)
+		if (!checkBraces(tokens)) {
+			console.error('Wrong number of braces')
+			tokens = []
+		}
+		if (!this.correct(tokens)) {
+			tokens = []
+		}
 		return tokens
 	},
 
+	/**
+	  inOperator( arr )
+	  	Special function for handling 'in' operator. Removes the opening braces
+	  	and closing braces of in operands
+	  @param {Array} Array of tokens
+	  @return {Array} Same array with 'in' operands modified
+	**/
 	inOperator (arr) {
 		let ind = arr.indexOf('in'),
 			start,
@@ -67,6 +101,12 @@ extend(E.prototype, {
 		return arr
 	},
 
+	/**
+	  postfix( tokens )
+	  	Convert the tokens to postfix so that we can evaluate from left to right
+	  @param {Array} Array of tokens
+	  @return {Array} Postfix array of the tokens
+	**/
 	postfix (tokens) {
 		let o = [],
 			e = []
@@ -101,9 +141,17 @@ extend(E.prototype, {
 		return e
 	},
 
+	/**
+	  process( arr )
+	  	Process the postfix array of tokens and create a json object
+	  	of the original expression for easy evaluation
+	  @param {Array} Array of tokens
+	  @return {Object} Json object of original expression
+	**/
 	process (tokens) {
 		if (tokens.length < 3) {
-			throw Error('Minimum number of elements in array is 3')
+			console.error('Wrong expression', this.exp)
+			return false
 		}
 
 		let stack = []
@@ -119,24 +167,69 @@ extend(E.prototype, {
 				stack.push(o)
 			}
 		}
-
-		return stack
+		return stack.length ? stack[0] : ''
 	},
 
+	/**
+	  objectify( a, b, o )
+	  	Create json object for given operands and operator
+	  @param {String} left operand
+	  @param {String} right operand
+	  @param {String} operator
+	  @return {Object} Json object of operands and operator
+	**/
 	objectify (a, b, o) {
-		console.log('a')
+		if (o === 'in') b = b.split(',')
 		return {
 			left: {
-				value: a
+				value: format(a),
+				type: type(a),
+				variable: true
 			},
 			operator: o,
 			right: {
-				value: b
+				value: format(b),
+				type: type(b),
+				variable: false
 			}
 		}
+	},
+
+	/**
+	  evaluate( obj )
+	  	Evaluate the expression with given object data
+	  @param {Object} json object
+	  @return {Boolean} true or false according to evaluation
+	**/
+	evaluate (obj) {
+		if (!this.processed) return false
+		return evaluate(this.processed, obj)
+	},
+
+	/**
+	  correct( obj )
+	  	Check for expression correctness
+	  @param {Object} Expression array
+	  @return {Boolean} true or false according to evaluation
+	**/
+	correct (exp) {
+		let index = 0
+		for (let e of exp) {
+			if (braces.includes(e)) continue
+			index++
+
+			if (index % 2 == 0 && !operators.includes(e)) return false
+		}
+		return true
 	}
+
 })
 
 export default E
 
-// console.log(JSON.stringify(E('(id = "123323" and price> 1299) or (skuid = 31231 and article in ( shoes, caps))'), 0, 4))
+console.log(E('(id = "123323" and price> 1299) or (skuid = 31231 and article in ( shoes, caps))').evaluate({
+	id: '123323',
+	price: 2000,
+	skuid: 31231,
+	article: 'shoes'
+}))
