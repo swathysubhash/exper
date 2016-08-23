@@ -1,6 +1,6 @@
 {
   "name": "exper",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Expression parser and evaluator",
   "main": "lib/index.js",
   "scripts": {
@@ -44,5 +44,8 @@
   "bugs": {
     "url": "https://github.com/swathysubhash/exper/issues"
   },
-  "homepage": "https://github.com/swathysubhash/exper#readme"
+  "homepage": "https://github.com/swathysubhash/exper#readme",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
 }
