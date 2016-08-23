@@ -1,13 +1,13 @@
 {
   "name": "exper",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Expression parser and evaluator",
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "npm run test",
     "babel": "rm -rf lib/ && babel src -d lib",
     "prestart": "babel src -d lib -w &",
-    "install": "npm run babel",
+    "postinstall": "npm run babel",
     "start": "./node_modules/.bin/nodemon -L --debug --es_staging",
     "precommit": "eslint .",
     "lint": "eslint .",
