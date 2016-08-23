@@ -1,10 +1,10 @@
 {
   "name": "exper",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Expression parser and evaluator",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "npm run test",
+    "prepublish": "npm run babel && npm run test",
     "babel": "rm -rf lib/ && babel src -d lib",
     "prestart": "babel src -d lib -w &",
     "postinstall": "npm run babel",
