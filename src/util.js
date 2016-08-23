@@ -12,6 +12,8 @@ const util = {
 				str = +str
 			} else {
 				str = str.trim()
+				if (str === 'true') return true
+				if (str === 'false') return false
 				if (str.indexOf('"') !== -1) str = str.replace(/\"/g, '')
 				if (str.indexOf('\'') !== -1) str = str.replace(/\'/g, '')
 			}

@@ -78,6 +78,16 @@ describe('Complex expressions', function() {
 		res = e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shirts' })
 		assert.equal(res, false)
 	})
+	it('example2- boolean', function () {
+		let exp = '(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) and available = true',
+			e = E(exp)
+		let res = e.evaluate({ id: 123323, price: 2000, skuid: 31231, article: 'shoes', available: true })
+		assert.equal(res, true)
+		res = e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes', available: false })
+		assert.equal(res, false)
+		res = e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes', available: 'true' })
+		assert.equal(res, false)
+	})
 	it('example2 with dots operator - and', function () {
 		let exp = '(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) and sizes.38 = available',
 			e = E(exp)
