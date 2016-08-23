@@ -1,6 +1,6 @@
 {
   "name": "exper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Expression parser and evaluator",
   "main": "./lib/index.js",
   "scripts": {
