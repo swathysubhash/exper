@@ -13,10 +13,10 @@ This module can be used for evaluating simple logical expressions. Expressions s
 Currently supported operators are '=', '>', '<', '&&', '||', 'and', 'or', 'in'.
 Expression example
 
-`'(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps))'`
+`'(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) and  sizes.38 = available'`
 
 We need to pass an object which can provide values for this expression. 
-`Eg. { id: 123323, price: 2000, skuid: 31231, article: 'shoes' }`
+`Eg. { id: 123323, price: 2000, skuid: 31231, article: 'shoes', sizes: { '38': 'available', '39': 'not-available'} }`
 
 Return value will be true or false accordingly.
 
@@ -44,6 +44,16 @@ e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes' }) // true
 e.evaluate({ id: 123523, price: 2000, skuid: 41231, article: 'shoes' }) // false
 e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shoes' }) // true
 e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shirts' }) // false`
+```
+
+let exp3 = '(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) and sizes.38 = available'
+
+e = Exper(exp2)
+e.evaluate({ id: 123323, price: 2000, skuid: 31231, article: 'shoes' }) // false
+e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes',
+  				  sizes: { '38': 'available', '39': 'not-available'} }) // true
+e.evaluate({ id: 123523, price: 2000, skuid: 41231, article: 'shoes',
+              sizes: { '38': 'not-available', '39': 'not-available'} }) // false
 ```
 
 

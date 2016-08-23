@@ -14,11 +14,39 @@ function evaluate (exp, data) {
 		exp.right._value = evaluate(exp.right.value, data)
 	}
 
-	if (exp.left.variable && typeof data[exp.left.value] !== 'undefined') {
+	if (typeof exp.left.value === 'string' && exp.left.value.indexOf('.') !== -1) {
+		exp.left._value = at(data, exp.left.value)
+	} else if (exp.left.variable && typeof data[exp.left.value] !== 'undefined') {
 		exp.left._value = data[exp.left.value]
 	}
 
 	return operation(exp.left._value, exp.right._value, exp.operator)
+}
+
+/**
+	at( data, loc )
+	  	Find the property at the path location of data
+	@param {Object} data object
+	@param {String} location string
+	@return {Object} Object at the specified path or string
+**/
+function at (obj, path) {
+	var failed = false,
+		o = obj
+
+	if (!obj || !path) {
+		return obj
+	}
+
+	path.split('.').forEach(p => {
+		if (o[p] !== null && o[p] !== undefined && !failed) {
+			o = o[p]
+		} else {
+			failed = true
+		}
+	})
+
+	return failed ? o[path] : o
 }
 
 /**

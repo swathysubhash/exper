@@ -78,4 +78,24 @@ describe('Complex expressions', function() {
 		res = e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shirts' })
 		assert.equal(res, false)
 	})
+	it('example2 with dots operator - and', function () {
+		let exp = '(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) and sizes.38 = available',
+			e = E(exp)
+		let res = e.evaluate({ id: 123323, price: 2000, skuid: 31231, article: 'shoes' })
+		assert.equal(res, false)
+		res = e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes',  sizes: { '38': 'available', '39': 'not-available'} })
+		assert.equal(res, true)
+		res = e.evaluate({ id: 123523, price: 2000, skuid: 41231, article: 'shoes',  sizes: { '38': 'not-available', '39': 'not-available'} })
+		assert.equal(res, false)
+	})
+	it('example2 with dots operator - or', function () {
+		let exp = '(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) or sizes.38 = available',
+			e = E(exp)
+		let res = e.evaluate({ id: 123323, price: 2000, skuid: 31231, article: 'shoes' })
+		assert.equal(res, true)
+		res = e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes',  sizes: { '38': 'available', '39': 'not-available'} })
+		assert.equal(res, true)
+		res = e.evaluate({ id: 123523, price: 2000, skuid: 41231, article: 'shoes',  sizes: { '38': 'not-available', '39': 'not-available'} })
+		assert.equal(res, false)
+	})
 })
