@@ -43,8 +43,7 @@ e.evaluate({ id: 123323, price: 2000, skuid: 31231, article: 'shoes' }) // true
 e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes' }) // true
 e.evaluate({ id: 123523, price: 2000, skuid: 41231, article: 'shoes' }) // false
 e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shoes' }) // true
-e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shirts' }) // false`
-```
+e.evaluate({ id: 123523, price: 1000, skuid: 31231, article: 'shirts' }) // false
 
 let exp3 = '(id = 123323 and price> 1299) or (skuid = 31231 and article in ( shoes, caps)) and sizes.38 = available'
 
@@ -54,6 +53,7 @@ e.evaluate({ id: 123523, price: 2000, skuid: 31231, article: 'shoes',
   				  sizes: { '38': 'available', '39': 'not-available'} }) // true
 e.evaluate({ id: 123523, price: 2000, skuid: 41231, article: 'shoes',
               sizes: { '38': 'not-available', '39': 'not-available'} }) // false
+
 ```
 
 
